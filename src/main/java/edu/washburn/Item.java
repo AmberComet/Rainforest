@@ -1,12 +1,19 @@
 package edu.washburn;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 /* This not done and still has place holder code but this is a general outline 
 * 
 */
 public class Item {
     private String url;
-    private String asin;
-    private String sku;
     private String itemName;
     private boolean notify;
     private boolean percent;
@@ -34,7 +41,12 @@ public class Item {
         this.itemName = itemName;
         this.notify=notify;
         this.percent = percent;
-        setMetaData(url);
+        try {
+            setMetaData(url);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         setGoalPrice(userNum);
 
     }
@@ -54,9 +66,41 @@ public class Item {
 
 
     //TODO actually write the code this does the shit
-    private void setMetaData(String url){
+    private void setMetaData(String url) throws Exception{
+        //opening a connection to the website
+        URL obj = new URL(url); //could prob come up with a better name for this object
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+        //headers for the connection so it works
+        con.setRequestProperty("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:120.0) Gecko/20100101 Firefox/120." );
+
+        int responseCode = con.getResponseCode();
+        System.out.println("Response code: " + responseCode);
+
+        //reads the website from buffer and builds the HTML
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuilder response = new StringBuilder();
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+
         
+        String html = response.toString();
+
+        Document doc = Jsoup.parse(html);
+        Elements webPrice = doc.select("<span class=\"a-offscreen\"");
+        String price = webPrice.toString();
+        price=price.replace('$',' ');
+        price=price.strip();
+        this.baseprice=Double.valueOf(price);
+
+        Elements itemName=doc.select("<span id=\"productTitle\" class=\"a-size-large product-title-word-break\"> ");
+        this.itemName=itemName.toString();
+        System.out.println();
     }
+    
 
     // Getters and Setters
 
@@ -66,16 +110,12 @@ public class Item {
 
     public void setUrl(String url) {
         this.url = url;
-        setMetaData(url);
-    }
-
-    public String getAsin() {
-        return asin;
-    }
-
-
-    public String getSku() {
-        return sku;
+        try {
+            setMetaData(url);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
 
