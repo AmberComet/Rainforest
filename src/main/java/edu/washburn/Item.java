@@ -22,7 +22,6 @@ public class Item {
     private Double baseprice;
 
     public Item(){
-        itemName="";
         url="";
         notify=true;
         percent=false;
@@ -31,14 +30,12 @@ public class Item {
     /**
      * 
      * @param url The URL of the Amazon item
-     * @param itemName The Name of the Item
      * @param notify Set true for for Notfcation Mode set false for buy mode
      * @param percent Set true if you are looking for a percentage discount keep false for specific price 
      * @param userNum Ether the price or percentage discount you are looking for depends on how you set the last flag
      */
-    public Item(String url,String itemName, boolean notify, boolean percent,Double userNum){
+    public Item(String url, boolean notify, boolean percent,Double userNum){
         this.url = url;
-        this.itemName = itemName;
         this.notify=notify;
         this.percent = percent;
         try {
@@ -90,13 +87,13 @@ public class Item {
         String html = response.toString();
 
         Document doc = Jsoup.parse(html);
-        Elements webPrice = doc.select("<span class=\"a-offscreen\"");
+        Elements webPrice = doc.getElementsByTag("<span class=\"a-offscreen\">");
         String price = webPrice.toString();
         price=price.replace('$',' ');
         price=price.strip();
         this.baseprice=Double.valueOf(price);
 
-        Elements itemName=doc.select("<span id=\"productTitle\" class=\"a-size-large product-title-word-break\"> ");
+        Elements itemName=doc.select("");
         this.itemName=itemName.toString();
         System.out.println();
     }
@@ -152,7 +149,20 @@ public class Item {
     }
 
     
-
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("Item:" + itemName +"\n");
+        sb.append("The URL is:" + url +"\n");
+        sb.append("The base price is:" + baseprice +"\n");
+        sb.append("The goal price is:" + goalPrice + "\n");
+        sb.append("The current mode for this item is currently set to:");
+        if (notify) {
+            sb.append(" Notifcation mode");
+        }else{
+            sb.append(" Buy mode");
+        }
+        return sb.toString();
+    }
 
 
 }
