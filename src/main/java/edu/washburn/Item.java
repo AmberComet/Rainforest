@@ -86,15 +86,11 @@ public class Item {
 
         
         String html = response.toString();
-
-        //this logic does the actuall parsing
-        Document doc = Jsoup.parse(html);
-        
-        String input = "your_input_string_here";
+        System.out.println(html); //so the HTML is corrupted
         String regex = "<span class=\"a-offscreen\">(.*?)</span>";
 
         Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(input);
+        Matcher matcher = pattern.matcher(html);
 
         String capturedData = null;
         if (matcher.find()) {
@@ -102,10 +98,6 @@ public class Item {
         }
         System.out.println("CapturedData: "+capturedData);
         this.baseprice=Double.parseDouble(capturedData);
-
-        Elements itemName=doc.select("");
-        this.itemName=itemName.toString();
-        System.out.println();
     }
     
 
