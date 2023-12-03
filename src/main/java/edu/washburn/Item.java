@@ -6,8 +6,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /* This not done and still has place holder code but this is a general outline 
 * 
@@ -62,7 +63,7 @@ public class Item {
     }
 
 
-    //TODO actually write the code this does the shit
+    //TODO Fix parsing 
     private void setMetaData(String url) throws Exception{
         //opening a connection to the website
         URL obj = new URL(url); //could prob come up with a better name for this object
@@ -86,12 +87,21 @@ public class Item {
         
         String html = response.toString();
 
+        //this logic does the actuall parsing
         Document doc = Jsoup.parse(html);
-        Elements webPrice = doc.getElementsByTag("<span class=\"a-offscreen\">");
-        String price = webPrice.toString();
-        price=price.replace('$',' ');
-        price=price.strip();
-        this.baseprice=Double.valueOf(price);
+        
+        String input = "your_input_string_here";
+        String regex = "<span class=\"a-offscreen\">(.*?)</span>";
+
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(input);
+
+        String capturedData = null;
+        if (matcher.find()) {
+            capturedData = matcher.group(1);
+        }
+        System.out.println("CapturedData: "+capturedData);
+        this.baseprice=Double.parseDouble(capturedData);
 
         Elements itemName=doc.select("");
         this.itemName=itemName.toString();
