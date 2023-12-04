@@ -1,12 +1,5 @@
 package edu.washburn;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 /* This not done and still has place holder code but this is a general outline 
 * 
 */
@@ -37,7 +30,7 @@ public class Item {
         this.notify=notify;
         this.percent = percent;
         try {
-            setMetaData(url);
+            setMetaData();
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -60,41 +53,12 @@ public class Item {
     }
 
 
-    //TODO pull this into its own class
-    private void setMetaData(String url) throws Exception{
-        //opening a connection to the website
-        URL obj = new URL(url); //could prob come up with a better name for this object
-        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-
-        //headers for the connection so it works
-        con.setRequestProperty("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:120.0) Gecko/20100101 Firefox/120." );
-
-        int responseCode = con.getResponseCode();
-        System.out.println("Response code: " + responseCode);
-
-        //reads the website from buffer and builds the HTML
-        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-        String inputLine;
-        StringBuilder response = new StringBuilder();
-        while ((inputLine = in.readLine()) != null) {
-            response.append(inputLine);
-        }
-        in.close();
-
+    
+    private void setMetaData(){
+        Query query = new Query(url);
+        this.baseprice = Double.parseDouble(query.getPrice());
+        this.itemName = query.getItemName();
         
-        String html = response.toString();
-        System.out.println(html); //so the HTML is corrupted
-        String regex = "<span class=\"a-offscreen\">(.*?)</span>";
-
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(html);
-
-        String capturedData = null;
-        if (matcher.find()) {
-            capturedData = matcher.group(1);
-        }
-        System.out.println("CapturedData: "+capturedData);
-        this.baseprice=Double.parseDouble(capturedData);
     }
     
 
@@ -107,7 +71,7 @@ public class Item {
     public void setUrl(String url) {
         this.url = url;
         try {
-            setMetaData(url);
+            setMetaData();
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

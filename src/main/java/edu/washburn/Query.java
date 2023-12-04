@@ -65,6 +65,8 @@ public class Query {
         }
         System.out.println("CapturedData: "+capturedData);
         this.currentPrice=capturedData;
+
+        //TODO add code that captures the item name
     }
 
     public String getPrice(){
