@@ -27,6 +27,7 @@ public class Query {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        captureData();
     }
 
     private void scrapeSite() throws IOException{
