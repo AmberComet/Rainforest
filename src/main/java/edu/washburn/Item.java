@@ -4,9 +4,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -63,7 +60,7 @@ public class Item {
     }
 
 
-    //TODO Fix parsing 
+    //TODO pull this into its own class
     private void setMetaData(String url) throws Exception{
         //opening a connection to the website
         URL obj = new URL(url); //could prob come up with a better name for this object

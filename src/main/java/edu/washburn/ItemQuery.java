@@ -1,6 +1,0 @@
-package edu.washburn;
-
-//TODO build this class
-public class ItemQuery {
-    
-}
