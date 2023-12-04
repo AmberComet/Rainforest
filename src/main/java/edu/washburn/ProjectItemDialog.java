@@ -1,3 +1,5 @@
+package edu.washburn;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
