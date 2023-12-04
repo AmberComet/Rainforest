@@ -32,7 +32,7 @@ public class Item {
         try {
             setMetaData();
         } catch (Exception e) {
-            // TODO Auto-generated catch block
+            System.err.println("error no valid HTML returned");
             e.printStackTrace();
         }
         setGoalPrice(userNum);
@@ -127,6 +127,5 @@ public class Item {
         }
         return sb.toString();
     }
-
 
 }
