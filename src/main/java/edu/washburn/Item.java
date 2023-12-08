@@ -29,13 +29,15 @@ public class Item {
         this.url = url;
         this.notify=notify;
         this.percent = percent;
-        try {
+        try { //TODO this doesnt work fix it now! >:(
             setMetaData();
         } catch (Exception e) {
             System.err.println("error no valid HTML returned");
             e.printStackTrace();
         }
         setGoalPrice(userNum);
+
+
 
     }
 
