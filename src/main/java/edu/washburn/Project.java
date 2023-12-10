@@ -96,7 +96,7 @@ public class Project extends JFrame {
 	public void openItemDialog() {
 		//Item[] itemsList = new Item[getItemCount()];
 		Item[] itemsList = new Item[1];
-		Item m = new Item("https://www.fuckyou.com/", false, false, 45.0);
+		Item m = new Item("https://www.google.com", false, false, 45.0);
 		itemsList[0] = m;
 		if(dialog==null) dialog=new ProjectItemDialog(Project.this, true, itemsList);
 		dialog.setVisible(true);
