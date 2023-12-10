@@ -53,6 +53,9 @@ public class Query {
         this.html = response.toString();
         
     }
+    public void captureDataFromFile(String filename){
+        
+    }
 
     private void captureData(){
         String regex = "<span class=\"a-offscreen\">(.*?)</span>";
