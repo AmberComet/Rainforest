@@ -7,18 +7,19 @@ import javax.swing.*;
 public class Project extends JFrame {
 	private JLabel itemNameLabel;
 	private JTextField itemNameField;
+	private JLabel itemCostLabel;
+	private JTextField itemCostField;
 	private JComboBox<String> actionBox;
 	private String[] actionBoxItems = {"Notify On Trigger", "Purchase On Trigger"};
 	private JButton submitButton;
 	private JButton exitButton;
 	private JButton viewButton;
 	private ProjectItemDialog dialog = null;
-	private int itemCount = 10;
 	
 
 	public Project() {
 		JPanel mainPanel = new JPanel();
-		mainPanel.setLayout(new GridLayout(3,1));
+		mainPanel.setLayout(new GridLayout(4,1));
 		add(mainPanel);
 
 		JPanel namePanel = new JPanel();
@@ -26,6 +27,13 @@ public class Project extends JFrame {
 		itemNameField = new JTextField(20);
 		namePanel.add(itemNameLabel);
 		namePanel.add(itemNameField);
+
+		JPanel costPanel = new JPanel();
+		itemCostLabel = new JLabel("Desired price: ");
+		itemCostField = new JTextField(20);
+		costPanel.add(itemCostLabel);
+		costPanel.add(itemCostField);
+
 
 		JPanel actionPanel = new JPanel();
 		submitButton = new JButton("Submit");
@@ -44,6 +52,7 @@ public class Project extends JFrame {
 		buttonPanel.add(exitButton);
 
 		mainPanel.add(namePanel);
+		mainPanel.add(costPanel);
 		mainPanel.add(actionPanel);
 		mainPanel.add(buttonPanel);
 		
@@ -64,6 +73,8 @@ public class Project extends JFrame {
 				      System.exit(0);
 			} else if (e.getSource() == viewButton) {
 				openItemDialog();
+			} else if (e.getSource() == submitButton) {
+				submitItem();
 			}
 
 		}
@@ -74,10 +85,20 @@ public class Project extends JFrame {
 		 * Validate that the link is real; if not, display dialog saying so;
 		 * submit it to the server application;
 		 */
+		
+		boolean isPercent = itemCostField.getText().startsWith("%");
+		boolean notify = (actionBox.getSelectedIndex() > 0) ? false : true;
+		Double dPrice = Double.parseDouble(itemCostField.getText().replaceAll("\\D", ""));
+		Item itm = new Item(itemNameField.getText(),notify, isPercent, dPrice);
+		//TODO send item to server
 	}
 	
 	public void openItemDialog() {
-		if(dialog==null) dialog=new ProjectItemDialog(Project.this, true, itemCount);
+		//Item[] itemsList = new Item[getItemCount()];
+		Item[] itemsList = new Item[1];
+		Item m = new Item("https://www.google.com", false, false, 45.0);
+		itemsList[0] = m;
+		if(dialog==null) dialog=new ProjectItemDialog(Project.this, true, itemsList);
 		dialog.setVisible(true);
 	}
 

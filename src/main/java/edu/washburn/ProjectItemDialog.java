@@ -8,20 +8,21 @@ public class ProjectItemDialog extends JDialog {
 	private JButton closeButton;
 	private ProjectItemPanel[] panels;
 
-	public ProjectItemDialog(JFrame parent, Boolean modal, int items) {
+	public ProjectItemDialog(JFrame parent, Boolean modal, Item[] items) {
 		super(parent,modal);
 
 		JPanel mainPanel = new JPanel();
-		mainPanel.setLayout(new GridLayout(items+1,1));
+		mainPanel.setLayout(new GridLayout(items.length+1,1));
 		add(mainPanel);
 
 		JPanel footer = new JPanel();
 		closeButton = new JButton("Close");
 		footer.add(closeButton);
 
-		panels = new ProjectItemPanel[items];
-		for (int i=0; i<items; i++) {
-			panels[i] = getPanelItemInfo(i);
+		panels = new ProjectItemPanel[items.length];
+		//returnedItems = getItems();
+		for (int i=0; i<items.length; i++) {
+			panels[i] = getPanelItemInfo(items[i]);
 			mainPanel.add(panels[i]);
 		}
 		mainPanel.add(footer);
@@ -30,7 +31,7 @@ public class ProjectItemDialog extends JDialog {
 		closeButton.addActionListener(ah);
 
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
-		setSize(400,50+50*items);
+		setSize(500,50+50*items.length);
 		setVisible(false);
 	}
 	public class ActionHandler implements ActionListener {
@@ -44,8 +45,8 @@ public class ProjectItemDialog extends JDialog {
 	/*
 	 * Get info from the server and put in object
 	 */
-	public ProjectItemPanel getPanelItemInfo(int n) {
-		ProjectItemPanel i = new ProjectItemPanel("TEST", 1);
+	public ProjectItemPanel getPanelItemInfo(Item itm) {
+		ProjectItemPanel i = new ProjectItemPanel(itm);
 		return i;
 	}
 
