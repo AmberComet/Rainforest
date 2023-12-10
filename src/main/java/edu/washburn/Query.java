@@ -1,10 +1,12 @@
 package edu.washburn;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,17 +22,18 @@ public class Query {
 
     public Query(String url){
         this.url = url;
-    
-        try {
-            scrapeSite();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        captureDataFromFile();
+        /*try {
+        *    scrapeSite();
+        *} catch (IOException e) {
+        *    // TODO Auto-generated catch block
+        *    e.printStackTrace();
+       }*/
         captureData();
     }
 
-    private void scrapeSite() throws IOException{
+    //TODO this doesnt work
+    private void scrapeSite() throws IOException{ 
         //opening a connection to the website
         URL obj = new URL(url); //could prob come up with a better name for this object
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -53,8 +56,18 @@ public class Query {
         this.html = response.toString();
         
     }
-    public void captureDataFromFile(String filename){
-        
+    public void captureDataFromFile(){
+        String html ="";
+        try{
+           File htmlFile = new File("TestHTML.html");
+           Scanner scan = new Scanner(htmlFile);
+           while(scan.hasNextLine()){
+                html+= scan.nextLine();
+           }
+           this.html=html;
+        }catch(Exception e ){
+            System.err.println("file not found");
+        }
     }
 
     private void captureData(){
