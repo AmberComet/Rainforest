@@ -17,7 +17,9 @@ public class Query {
     private String itemName;
 
     public Query(){
-        url ="";
+        url ="src\\main\\resources\\TestHTML.txt";
+        captureDataFromFile();
+        captureData();
     }
 
     public Query(String url){
@@ -59,31 +61,35 @@ public class Query {
     public void captureDataFromFile(){
         String html ="";
         try{
-           File htmlFile = new File("TestHTML.html");
+           File htmlFile = new File(url);
            Scanner scan = new Scanner(htmlFile);
            while(scan.hasNextLine()){
-                html+= scan.nextLine();
+               html= html.concat(scan.nextLine());
            }
+           scan.close();
            this.html=html;
         }catch(Exception e ){
             System.err.println("file not found");
         }
     }
 
-    private void captureData(){
+    private void captureData() {
         String regex = "<span class=\"a-offscreen\">(.*?)</span>";
-
+    
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(html);
-
+    
         String capturedData = null;
         if (matcher.find()) {
             capturedData = matcher.group(1);
+            System.out.println("CapturedData found: " + capturedData);
+        } else {
+            System.out.println("No match found for the regex.");
         }
-        System.out.println("CapturedData: "+capturedData);
-        this.currentPrice=capturedData;
-
-        //TODO add code that captures the item name
+    
+        this.currentPrice = capturedData;
+    
+        // TODO: Add code that captures the item name
     }
 
     public String getPrice(){

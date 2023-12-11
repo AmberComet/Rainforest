@@ -63,7 +63,6 @@ public class Item {
         this.baseprice = Double.parseDouble(query.getPrice());
         this.itemName = query.getItemName();
         
-        
     }
     
 
